@@ -7,7 +7,6 @@
  * @license          Lesser General Public License (LGPL) (http://www.gnu.org/copyleft/lesser.html)
  * @version          1.7
  */
-defined('PH7') or exit('Restricted access');
 
 //------------------------------------------------
 // Gets list of name of directories inside a directory
