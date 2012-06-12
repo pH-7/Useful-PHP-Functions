@@ -222,17 +222,6 @@ function exec_file_query($oDb, $sSqlFile, $sOldPrefix = null, $sNewPrefix = null
 
 
 //------------------------------------------------
-// Delete Install Folder
-//------------------------------------------------
-
-function remove_install_dir($sDir) {
-    delete_dir($sDir);
-}
-
-// End function
-
-
-//------------------------------------------------
 // Generate ID
 //------------------------------------------------
 
@@ -248,8 +237,8 @@ function generate_id($iLength = 40) {
 // IS URL Rewrite (.htaccess)
 //------------------------------------------------
 
-function is_url_rewrite($sDir) {
-    return is_file($sDir . '.htaccess');
+function is_url_rewrite($sDir, $sFile = '.htaccess') {
+    return is_file($sDir . $sFile);
 }
 
 // End function
