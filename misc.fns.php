@@ -207,11 +207,11 @@ function delete_dir($sPath) {
 // Executes SQL Queries
 //------------------------------------------------
 
-function exec_file_query($oDb, $sSqlFile) {
+function exec_file_query($oDb, $sSqlFile, $sOldPrefix = null, $sNewPrefix = null) {
        if(!is_file($sSqlFile)) return false;
 
        $sSqlContent = file_get_contents($sSqlFile);
-       $sSqlContent = str_replace(PH7_TABLE_PREFIX, $_SESSION['db']['db_prefix'], $sSqlContent);
+       $sSqlContent = str_replace($sOldPrefi, $sNewPrefix, $sSqlContent);
        $rStmt = $oDb->exec($sSqlContent);
        unset($sSqlContent);
 
@@ -225,11 +225,8 @@ function exec_file_query($oDb, $sSqlFile) {
 // Delete Install Folder
 //------------------------------------------------
 
-function remove_install_dir() {
-    // Delete the _install/ directory
-    @chmod(PH7_ROOT_INSTALL, 0777);
-    delete_dir(PH7_ROOT_INSTALL);
-    @rmdir(PH7_ROOT_INSTALL);
+function remove_install_dir($sDir) {
+    delete_dir($sDir);
 }
 
 // End function
@@ -251,8 +248,8 @@ function generate_id($iLength = 40) {
 // IS URL Rewrite (.htaccess)
 //------------------------------------------------
 
-function is_url_rewrite() {
-    return is_file(PH7_ROOT_INSTALL . '.htaccess');
+function is_url_rewrite($sDir) {
+    return is_file($sDir . '.htaccess');
 }
 
 // End function
