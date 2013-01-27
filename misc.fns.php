@@ -9,7 +9,7 @@
  */
 
 //------------------------------------------------
-// Gets list of name of directories inside a directory
+// Get the list of name of directories inside a directory.
 //------------------------------------------------
 
 function get_dir_list($sDir) {
@@ -32,7 +32,7 @@ function get_dir_list($sDir) {
 
 
 //------------------------------------------------
-// Checks Valid Directory
+// Check Valid Directory
 //------------------------------------------------
 
 function is_directory($sDir) {
@@ -50,7 +50,7 @@ function is_directory($sDir) {
 
 
 //------------------------------------------------
-// Checks Start Extension
+// Check Start Extension
 //------------------------------------------------
 
 function check_ext_start ($sDir) {
@@ -63,7 +63,7 @@ function check_ext_start ($sDir) {
 
 
 //------------------------------------------------
-// Checks End Extension
+// Check End Extension
 //------------------------------------------------
 
 function check_ext_end($sDir) {
@@ -76,7 +76,7 @@ function check_ext_end($sDir) {
 
 
 //------------------------------------------------
-// Validate username
+// Validate Username
 //------------------------------------------------
 
 function validate_username($sUsername, $iMin = 4, $iMax = 40) {
@@ -91,15 +91,15 @@ function validate_username($sUsername, $iMin = 4, $iMax = 40) {
 
 
 //------------------------------------------------
-// Validate password
+// Validate Password
 //------------------------------------------------
 
 function validate_password($sPassword, $iMin = 6, $iMax = 92) {
     if(empty($sPassword)) return 'empty';
     else if(strlen($sPassword) < $iMin) return 'tooshort';
     else if(strlen($sPassword) > $iMax) return 'toolong';
-    else if(!preg_match('#[0-9]{1,}#', $sPassword)) return 'nonumber';
-    else if(!preg_match('#[A-Z]{1,}#', $sPassword)) return 'noupper';
+    else if(!preg_match('/[0-9]{1,}/', $sPassword)) return 'nonumber';
+    else if(!preg_match('/[A-Z]{1,}/', $sPassword)) return 'noupper';
     else return 'ok';
 }
 
@@ -107,7 +107,7 @@ function validate_password($sPassword, $iMin = 6, $iMax = 92) {
 
 
 //------------------------------------------------
-// Validate email
+// Validate Email
 //------------------------------------------------
 
 function validate_email($sEmail) {
@@ -133,7 +133,7 @@ function validate_name($sName, $iMin = 2, $iMax = 30) {
 
 
 //------------------------------------------------
-// Checks that all fields are filled
+// Check that all fields are filled
 //------------------------------------------------
 
 function filled_out($aVars) {
@@ -141,9 +141,8 @@ function filled_out($aVars) {
         if((!isset($sKey)) || ($sValue == '')) {
             return false;
         }
-        return true;
     }
-    return false; // Default value
+    return true;
 }
 
 // End function
@@ -173,16 +172,16 @@ function redirect($sUrl) {
 
 
 //------------------------------------------------
-// GET LANGUAGE OF WEB BROWSER
+// Get Language of the Web Browser
 //------------------------------------------------
 
 /**
- * @desc Get language the browser of client
- * @return string first two letters of the languages ​​of the client browser
+ * Get the User's Browser Language.
+ * @return string The first two lowercase letter of the browser language.
  */
-function get_language() {
-    $aLang = explode(',', @$_SERVER['HTTP_ACCEPT_LANGUAGE']);
-    return strtolower(substr(chop($aLang[0]), 0, 2));
+function get_browser_lang() {
+    $aLang = explode(',' ,@$_SERVER['HTTP_ACCEPT_LANGUAGE']);
+    return htmlspecialchars(strtolower(substr(chop($aLang[0]), 0, 2)));
 }
 
 // End function
@@ -193,11 +192,11 @@ function get_language() {
 //------------------------------------------------
 
 function delete_dir($sPath) {
-       return is_file($sPath) ?
-       @unlink($sPath) :
-       is_dir($sPath) ?
-       array_map('delete_dir',glob($sPath.'/*')) === @rmdir($sPath) :
-       false;
+    return is_file($sPath) ?
+        @unlink($sPath) :
+        is_dir($sPath) ?
+        array_map('delete_dir', glob($sPath.'/*')) === @rmdir($sPath) :
+        false;
 }
 
 // End function
@@ -225,7 +224,7 @@ function exec_file_query($oDb, $sSqlFile, $sOldPrefix = null, $sNewPrefix = null
 // Generate ID
 //------------------------------------------------
 
-// Mex 40 Characters with sha1 function
+// Max 40 Characters with sha1 function
 function generate_id($iLength = 40) {
     return substr(sha1(time() . getenv('REMOTE_ADDR')), 0, $iLength);
 }
@@ -259,20 +258,17 @@ function is_windows() {
 // File Get Contents with CURL
 //------------------------------------------------
 
-function get_file_contents($sFile) {
+function get_url_contents($sFile) {
     $rCh = curl_init();
-
     curl_setopt($rCh, CURLOPT_URL, $sFile);
     curl_setopt($rCh, CURLOPT_HEADER, 0);
     curl_setopt($rCh, CURLOPT_RETURNTRANSFER, 1);
     curl_setopt($rCh, CURLOPT_FOLLOWLOCATION, 1);
-
-    $sResult = curl_exec($rCh);
+    $mResult = curl_exec($rCh);
     curl_close($rCh);
-
     unset($rCh);
 
-    return $sResult;
+    return $mResult;
 }
 
 // End function
@@ -301,11 +297,11 @@ function zip_extract($sFile, $sDir) {
 
 
 //------------------------------------------------
-// Checks Valid URL
+// Check Valid URL
 //------------------------------------------------
 
 function check_url($sUrl) {
-    // Check URL valid with HTTP status code '200 OK'
+    // Checks if URL is valid with HTTP status code '200 OK' or '301 Moved Permanently'
     $aUrl = @get_headers($sUrl);
     return (strpos($aUrl[0], '200 OK') || strpos($aUrl[0], '301 Moved Permanently'));
 }
